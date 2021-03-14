@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import sun.misc.Cleaner;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -178,5 +179,34 @@ public class ClueController {
         }
 
         return mv;
+    }
+
+    @RequestMapping("/getUserListAndClue.do")
+    @ResponseBody
+    public Map<String, Object> getUserListAndClue(String id) {
+        System.out.println("更新修改模态窗口中信息");
+        return clueService.getUserListAndClue(id);
+    }
+
+    @RequestMapping("/update.do")
+    @ResponseBody
+    public boolean update(HttpServletRequest request, Clue c) {
+        System.out.println("更新线索");
+        // 修改时间，当前系统时间
+        String editTime = DateTimeUtil.getSysTime();
+        // 修改人：当前用户
+        String editBy = ((User)request.getSession().getAttribute("user")).getName();
+
+        c.setEditBy(editBy);
+        c.setEditTime(editTime);
+
+        return clueService.update(c);
+    }
+
+    @RequestMapping("/delete.do")
+    @ResponseBody
+    public boolean delete(@RequestParam(value = "id") String[] ids) {
+        System.out.println("删除所选线索");
+        return clueService.delete(ids);
     }
 }

@@ -18,4 +18,10 @@ public interface ClueService {
     boolean bund(String cid, String[] aids);
 
     boolean convert(String clueId, Tran t, String createBy);
+
+    Map<String, Object> getUserListAndClue(String id);
+
+    boolean update(Clue c);
+
+    boolean delete(String[] ids);
 }

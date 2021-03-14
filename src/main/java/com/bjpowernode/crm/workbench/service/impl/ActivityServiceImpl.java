@@ -62,11 +62,9 @@ public class ActivityServiceImpl implements ActivityService {
         boolean flag = true;
         // 查询出需要删除的备注的数量
         int count1 = activityRemarkDao.getCountByAids(ids);
-        System.out.println("count1 " + count1);
 
         // 删除备注，返回受到影响的条数
         int count2 = activityRemarkDao.deleteByAids(ids);
-        System.out.println("count2 " + count2);
 
         if(count1!=count2) {
             flag = false;
@@ -74,7 +72,6 @@ public class ActivityServiceImpl implements ActivityService {
 
         // 删除市场活动
         int count3 = activityDao.delete(ids);
-        System.out.println("count3 " + count3);
 
         if(count3 != ids.length) {
             flag = false;

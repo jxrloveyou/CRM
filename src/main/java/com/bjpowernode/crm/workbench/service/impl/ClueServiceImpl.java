@@ -1,5 +1,6 @@
 package com.bjpowernode.crm.workbench.service.impl;
 
+import com.bjpowernode.crm.settings.dao.UserDao;
 import com.bjpowernode.crm.settings.domain.User;
 import com.bjpowernode.crm.utils.DateTimeUtil;
 import com.bjpowernode.crm.utils.UUIDUtil;
@@ -10,12 +11,15 @@ import com.bjpowernode.crm.workbench.service.ClueService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ClueServiceImpl implements ClueService {
 
+    @Resource
+    private UserDao userDao;
     @Resource
     private ClueDao clueDao;
     @Resource
@@ -255,6 +259,50 @@ public class ClueServiceImpl implements ClueService {
         //(10) 删除线索
         int count10 = clueDao.delete(clueId);
         if(count10!=1) {
+            flag = false;
+        }
+        return flag;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndClue(String id) {
+        List<User> userList = userDao.getUserList();
+
+        Clue clue = clueDao.getById(id);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("uList", userList);
+        map.put("c", clue);
+
+        return map;
+    }
+
+    @Override
+    public boolean update(Clue c) {
+        boolean flag = true;
+
+        int count = clueDao.update(c);
+        if(count!=1) {
+            flag = false;
+        }
+
+        return flag;
+    }
+
+    @Override
+    public boolean delete(String[] ids) {
+        boolean flag = true;
+        // 查询出需要删除的备注数量
+        int count1 = clueRemarkDao.getCountById(ids);
+
+        // 删除备注
+        int count2 = clueRemarkDao.deleteById(ids);
+        if(count1!=count2) {
+            flag = false;
+        }
+
+        int count3 = clueDao.deleteIds(ids);
+        if(count3 != ids.length) {
             flag = false;
         }
         return flag;

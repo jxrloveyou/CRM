@@ -101,25 +101,25 @@
         on a.owner = b.id
         <where>
             <if test="fullname != null and fullname != ''">
-                fullname like '%' #{fullname} '%'
+                a.fullname like '%' #{fullname} '%'
             </if>
             <if test="company != null and company != ''">
-                and company like '%' #{company} '%'
+                and a.company like '%' #{company} '%'
             </if>
-            <if test="owner != null and company != ''">
-                and owner like '%' #{owner} '%'
+            <if test="owner != null and owner != ''">
+                and b.name like '%' #{owner} '%'
             </if>
             <if test="phone != null and phone != ''">
-                and phone = #{phone}
+                and a.phone = #{phone}
             </if>
             <if test="mphone != null and mphone != ''">
-                and mphone = #{mphone}
+                and a.mphone = #{mphone}
             </if>
             <if test="state != null and state != ''">
-                and state like '%' #{state} '%'
+                and a.state like '%' #{state} '%'
             </if>
             <if test="source != null and source != ''">
-                and source like '%' #{source} '%'
+                and a.source like '%' #{source} '%'
             </if>
         </where>
         limit #{skipCount},#{pageSize}
@@ -172,6 +172,36 @@
 
     <delete id="delete">
         delete from tbl_clue where id=#{id};
+    </delete>
+
+    <update id="update">
+        update tbl_clue set
+            fullname=#{fullname},
+            appellation=#{appellation},
+            owner=#{owner},
+            company=#{company},
+            job=#{job},
+            email=#{email},
+            phone=#{phone},
+            website=#{website},
+            mphone=#{mphone},
+            state=#{state},
+            source=#{source},
+            editBy=#{editBy},
+            editTime=#{editTime},
+            description=#{description},
+            contactSummary=#{contactSummary},
+            nextContactTime=#{nextContactTime},
+            address=#{address}
+        where id=#{id};
+    </update>
+
+    <delete id="deleteIds">
+        delete from tbl_clue
+        where in
+        <foreach collection="array" item="clueId" open="(" close=")" separator=",">
+            #{clueId}
+        </foreach>
     </delete>
   	
 </mapper>

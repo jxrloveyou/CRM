@@ -153,7 +153,7 @@ request.getContextPath() + "/";
 		        $(需要绑定元素的有效的外层元素).on(绑定事件的方式，需要绑定的元素的jquery对象，回调函数)
 		 */
         $("#activityBody").on("click", $("input[name=xz]"), function () {
-            $("#qx").prop("checked", $("input[name=xz]").length==$("input[name=xz]:checked").length);
+            $("#qx").prop("checked", $("input[name=xz]").length===$("input[name=xz]:checked").length);
         });
 
         // 为删除按钮绑定事件，执行市场活动的删除操作
@@ -205,7 +205,6 @@ request.getContextPath() + "/";
                 alert("只能选择一条记录进行修改");
             } else {
                 var id = $xz.val();
-
                 $.ajax({
                     url:"workbench/activity/getUserListAndActivity.do",
                     data:{
@@ -225,6 +224,7 @@ request.getContextPath() + "/";
                             html += "<option value='" + n.id + "'>" + n.name + "</option>";
                         });
                         $("#edit-owner").html(html);
+
 
                         $("#edit-id").val(data.a.id);
                         $("#edit-name").val(data.a.name);
